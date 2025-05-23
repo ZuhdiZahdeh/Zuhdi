@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إضافة طالب جديد</title>
+</head>
+<body>
+  
+  <input type="text" id="name" placeholder="اسم الطالب"><br>
+  <input type="text" id="grade" placeholder="الصف"><br>
+  <input type="email" id="email" placeholder="البريد الإلكتروني"><br>
+  <input type="text" id="phone" placeholder="رقم الهاتف"><br>
+
+  <button id="addStudent">إضافة الطالب</button>
+
+  <script type="module">
+    import { db } from './firebase-init.js';
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    document.getElementById('addStudent').onclick = async function() {
+      const name = document.getElementById('name').value;
+      const grade = document.getElementById('grade').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+
+      try {
+        const docRef = await addDoc(collection(db, "students"), {
+          name: name,
+          grade: grade,
+          email: email,
+          phone: phone
+        });
+
+        alert("تمت إضافة الطالب بنجاح برقم: " + docRef.id);
+      } catch (e) {
+        alert("خطأ: " + e);
+      }
+    };
+  </script>
+
+</body>
+</html>
