@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <title>إضافة مشروع</title>
+</head>
+<body>
+  <input type="text" id="student_id" placeholder="معرف الطالب"><br>
+  <input type="text" id="title" placeholder="عنوان المشروع"><br>
+  <textarea id="description" placeholder="وصف المشروع"></textarea><br>
+  <input type="date" id="submission_date"><br>
+  <button id="addProject">إضافة المشروع</button>
+
+<script type="module">
+import { db } from './firebase-init.js';
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+
+document.getElementById('addProject').onclick = async function() {
+  try {
+    const docRef = await addDoc(collection(db, "projects"), {
+      student_id: document.getElementById('student_id').value,
+      title: document.getElementById('title').value,
+      description: document.getElementById('description').value,
+      submission_date: document.getElementById('submission_date').value
+    });
+    alert("تمت إضافة المشروع: " + docRef.id);
+  } catch (error) {
+    alert("خطأ: " + error);
+  }
+};
+</script>
+</body>
+</html>
