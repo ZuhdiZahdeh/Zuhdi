@@ -1,0 +1,45 @@
+<!-- === index.html ===18-05-25 === -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>منصة إبداعات الطلاب</title>
+  <link rel="stylesheet" href="main-style.css">
+  <link rel="stylesheet" href="students-style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <script src="includes/include-html.js"></script>
+</head>
+
+<body class="index-page">
+
+  <div include-html="includes/header.html"></div>
+  
+  <main class="container">
+    <h2>منصة إبداعات الطلاب</h2>
+    <p>
+      موقع <strong>"إبداعات الطلاب"</strong> هو منصة تعليمية مبتكرة تهدف إلى إبراز إبداعات وإنجازات طلاب الكلية الإبراهيمية في مختلف المجالات الأكاديمية والأنشطة اللاصفية مثل التكنولوجيا، العلوم، البرمجة، الذكاء الاصطناعي، مسابقات القرآن، الشطرنج وغيرها. يتيح الموقع الفرصة للطلاب لعرض مواهبهم والتفاعل مع المجتمع المدرسي، ويوثق أنشطتهم وإنجازاتهم بشكل جذاب واحترافي.
+    </p>
+
+    <button class="open-video" data-video="https://www.youtube.com/embed/dyk1UX5aq1Q">🎬 شاهد مقدمة الموقع</button>
+
+    <div class="search-box">
+      <input type="text" id="search" placeholder="ابحث عن مشروع...">
+      <div id="no-results" style="display:none; margin-top: 15px; color: red;">لم يتم العثور على نتائج.</div>
+    </div>
+  </main>
+    <!-- أقسام ديناميكية سيتم تعبئتها باستخدام JavaScript -->
+    <section id="latest-ai-videos" class="section ai-section"></section>
+    <section id="latest-quran-videos" class="section quran-section"></section>
+    <section id="latest-eng-day-videos" class="section english-day-section"></section>
+    <section id="latest-event-photos" class="section photos-section"></section>
+
+    <button id="topBtn" onclick="topFunction()">⬆️ أعلى</button>
+
+  
+  <div include-html="includes/footer.html"></div>
+  <script src="main-script.js"></script>
+   <!--  Add Firebase to zuhdi-blank -->
+   <script type="module" src="firebase-init.js"></script>
+</body>
+
+</html>

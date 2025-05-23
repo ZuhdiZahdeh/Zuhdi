@@ -1,0 +1,58 @@
+/* === students-style.css ===18-05-25 === */
+.project-info {
+  padding: 20px;
+  text-align: right;
+}
+
+.project-info h2 {
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.project-info p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+  color: #555;
+}
+
+.short-desc {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.view-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.view-button:hover {
+  background-color: #27ae60;
+  transform: scale(1.05);
+}
+
+.read-more-content {
+  display: none; 
+}
+
+/* توحيد عرض بطاقات المشاريع */
+.project-card {
+  width: 300px !important;  /* يمكنك ضبط العرض حسب رغبتك */
+  box-sizing: border-box;
+}
+
+/* جعل التصميم متجاوبًا مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .project-card {
+    width: 90% !important;
+    margin: 0 auto;  /* لتوسيط البطاقات في الشاشات الصغيرة */
+  }
+}

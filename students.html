@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة طالب جديد</title>
+</head>
+<body>
+
+<input type="text" id="name" placeholder="اسم الطالب">
+<input type="text" id="grade" placeholder="الصف">
+<input type="email" id="email" placeholder="البريد الإلكتروني">
+<input type="text" id="phone" placeholder="الهاتف">
+
+<button id="add-student-btn">إضافة الطالب</button>
+
+<script type="module">
+
+// استيراد كائن قاعدة البيانات من ملف التهيئة
+import { db } from './firebase-init.js';
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+// دالة إضافة الطالب
+document.getElementById('add-student-btn').addEventListener('click', async () => {
+
+    const name = document.getElementById('name').value;
+    const grade = document.getElementById('grade').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+
+    try {
+        const docRef = await addDoc(collection(db, "students"), {
+            name: name,
+            grade: grade,
+            email: email,
+            phone: phone
+        });
+
+        alert("تمت إضافة الطالب بنجاح. رقم التعريف: " + docRef.id);
+    } catch (e) {
+        console.error("حدث خطأ: ", e);
+        alert("حدث خطأ أثناء إضافة الطالب.");
+    }
+});
+
+</script>
+
+</body>
+</html>

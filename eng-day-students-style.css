@@ -1,0 +1,176 @@
+/* === eng-day-students-style.css ===18-05-25 === */
+ /* تنسيق عام لأقسام الصفحة */
+section {
+    padding: 40px 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* قسم التعريف بالمسابقة */
+.intro-section {
+    background-color: #f4f9f4;
+    border-right: 5px solid #4CAF50;
+    border-left: 5px solid #4CAF50;
+}
+
+/*كلمات الافتتاح والتمهيد */
+.introductory-words {
+    background-color: #f4f9f4;
+    border-right: 5px solid #4CAF50;
+    border-left: 5px solid #4CAF50;
+}
+
+/* قسم حفل التكريم */
+.honor-section {
+    background-color: #fff8e6;
+    border-right: 5px solid #FFC107;
+    border-left: 5px solid #FFC107;
+}
+/* المشاركين حسب المراحل */
+.stages-section {
+    background-color: #eef6ff;
+    border-right: 5px solid #2196F3;
+    border-left: 5px solid #2196F3;
+}
+/* الأقسام الفرعية لمشاركات الطلاب */
+.voice-section {
+    background-color: #fff0f6;
+    border-right: 5px solid #d06e8f;
+    border-left: 5px solid #d06e8f;
+}
+
+/* معرض الصور */
+.participants-photos-section, .winners-photos-section {
+    background-color: #f9f9f9;
+    border-right: 5px solid #9c27b0;
+    border-left: 5px solid #9c27b0;
+}
+
+/* الأقسام الفرعية لحفل التكريم */
+.speeches-subsection, .participants-subsection, .winners-subsection, .competition-subsection, .photos-subsection, .videos-subsection {
+    background-color: #ffffff;
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* قسم فيديوهات التكريم بشكل خاص */
+.videos-subsection iframe {
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+/* تنسيق القسم العام للفيديوهات القصيرة */
+.shorts-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.shorts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.short-desc {
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+/* تعديل خاص للفيديوهات القصيرة في صفحة English Day */
+
+.short-card iframe {
+  width: 250px !important;   /* يمكنك ضبط هذا العرض حسب رغبتك */
+  aspect-ratio: 9 / 16 !important;  /* النسبة الصحيحة للفيديوهات القصيرة */
+  border-radius: 10px;
+  margin: auto;
+  display: block;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+/* تحسين شكل معرض الصور */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-top: 20px;
+}
+
+.gallery .thumbnail {
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery .thumbnail:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+/* تنسيق وتصغير صور الـ Brochures */
+.brochure {
+  width: 180px;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin: 10px;
+}
+
+.brochure:hover {
+  transform: scale(1.05);
+}
+
+/* نمط لتكبير الصورة بشكل كبير للقراءة */
+.brochure.expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 800px;
+  height: auto;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 1000;
+  cursor: zoom-out;
+  border-radius: 15px;
+}
+
+/* خلفية عند التكبير */
+.expanded-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 999;
+  display: none;
+}
+
+/* استجابة للهواتف المحمولة والأجهزة الصغيرة */
+/* استجابة أفضل على الأجهزة الصغيرة */
+@media (max-width: 600px) {
+  .short-card iframe {
+    width: 80% !important;
+    aspect-ratio: 9 / 16 !important;
+  }
+    .gallery .thumbnail {
+    width: 90%;
+    height: auto;
+  }
+}
