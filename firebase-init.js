@@ -19,5 +19,6 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  export const db = getFirestore(app);  // أضف هذه السطر لتفعيل Firestore
+  const db = getFirestore(app);  // أضف هذه السطر لتفعيل Firestore
+  export { db };
 </script>
