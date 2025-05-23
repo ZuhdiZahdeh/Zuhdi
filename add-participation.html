@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <title>إضافة مشاركة</title>
+</head>
+<body>
+  <input type="text" id="student_id" placeholder="معرف الطالب"><br>
+  <input type="text" id="project_id" placeholder="معرف المشروع"><br>
+  <input type="text" id="type" placeholder="نوع المشاركة"><br>
+  <input type="text" id="category" placeholder="الفئة"><br>
+  <input type="url" id="video_link" placeholder="رابط الفيديو"><br>
+  <input type="number" id="score" placeholder="العلامة"><br>
+  <button id="addParticipation">إضافة المشاركة</button>
+
+<script type="module">
+import { db } from './firebase-init.js';
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+
+document.getElementById('addParticipation').onclick = async function() {
+  try {
+    const docRef = await addDoc(collection(db, "participations"), {
+      student_id: document.getElementById('student_id').value,
+      project_id: document.getElementById('project_id').value,
+      type: document.getElementById('type').value,
+      category: document.getElementById('category').value,
+      video_link: document.getElementById('video_link').value,
+      score: parseInt(document.getElementById('score').value)
+    });
+    alert("تمت إضافة المشاركة: " + docRef.id);
+  } catch (error) {
+    alert("خطأ: " + error);
+  }
+};
+</script>
+</body>
+</html>
