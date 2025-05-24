@@ -27,7 +27,7 @@
     const counterSnap = await getDoc(counterRef);
 
     if (counterSnap.exists()) {
-      const newId = counterSnap.data().ID-lastStudent + 1;
+      const newId = counterSnap.data().IDlastStudent + 1;
 
       try {
         await setDoc(doc(db, "students", newId.toString()), {
@@ -38,7 +38,7 @@
         });
 
         await updateDoc(counterRef, {
-          ID-lastStudent: increment(1)
+          IDlastStudent: increment(1)
         });
 
         alert("✅ تمت إضافة الطالب بنجاح برقم: " + newId);
