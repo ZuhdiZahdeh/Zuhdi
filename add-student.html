@@ -13,10 +13,9 @@
 
 <button id="ID-students">إضافة الطالب</button>
 
-// استيراد كائن قاعدة البيانات من ملف التهيئة
 <script type="module">
   import { db } from './firebase-init.js';
-  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+  import { doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
   document.getElementById('ID-students').onclick = async function() {
     const name = document.getElementById('name').value;
@@ -24,17 +23,33 @@
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
 
-    try {
-      const docRef = await addDoc(collection(db, "students"), {
-        name: name,
-        grade: grade,
-        email: email,
-        phone: phone
-      });
+    const counterRef = doc(db, 'counters', 'studentsCounter');
+    const counterSnap = await getDoc(counterRef);
 
-      alert("تمت إضافة الطالب بنجاح برقم: " + docRef.id);
-    } catch (e) {
-      alert("خطأ: " + e);
+    if (counterSnap.exists()) {
+      const newId = counterSnap.data().ID-lastStudent + 1;
+
+      try {
+        await setDoc(doc(db, "students", newId.toString()), {
+          name: name,
+          grade: grade,
+          email: email,
+          phone: phone
+        });
+
+        await updateDoc(counterRef, {
+          ID_lastStudent: increment(1)
+        });
+
+        alert("✅ تمت إضافة الطالب بنجاح برقم: " + newId);
+      } catch (e) {
+        alert("❌ خطأ: " + e);
+      }
+    } else {
+      alert("❌ مستند العداد غير موجود، يرجى التأكد من إنشائه أولًا.");
     }
   };
 </script>
+
+</body>
+</html>
