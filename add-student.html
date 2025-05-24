@@ -1,13 +1,19 @@
+<!-- === index.html ===18-05-25 === -->
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>إضافة طالب جديد</title>
+  <meta charset="UTF-8">
+  <title>اضافة طالب جديد</title>
+  <link rel="stylesheet" href="main-style.css">
+  <link rel="stylesheet" href="students-style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <script src="includes/include-html.js"></script>
 </head>
-<body>
+
+<body class="index-page">
 
 <input type="text" id="name" placeholder="اسم الطالب">
-<input type="text" id="grade" placeholder="الصف">
+<input type="text" id="student_number" placeholder="رقم الطالب (تكتبه يدوياً)"> <input type="text" id="grade" placeholder="الصف">
 <input type="email" id="email" placeholder="البريد الإلكتروني">
 <input type="text" id="phone" placeholder="الهاتف">
 
@@ -15,38 +21,53 @@
 
 <script type="module">
   import { db } from './firebase-init.js';
-  import { doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+  // سنستخدم addDoc لإنشاء مستند بمعرف تلقائي، ولا نحتاج لـ doc, getDoc, setDoc, updateDoc, increment هنا لإضافة الطالب
+  import { collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
   document.getElementById('ID-students').onclick = async function() {
     const name = document.getElementById('name').value;
+    const student_number = document.getElementById('student_number').value; // جلب قيمة الحقل الجديد
     const grade = document.getElementById('grade').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
 
-    const counterRef = doc(db, 'counters', 'studentsCounter');
-    const counterSnap = await getDoc(counterRef);
+    // 1. التحقق من صحة المدخلات الأساسية
+    if (!name || !student_number || !grade || !email || !phone) {
+      alert("الرجاء تعبئة جميع الحقول المطلوبة.");
+      return;
+    }
 
-    if (counterSnap.exists()) {
-      const newId = counterSnap.data().IDlastStudent + 1;
+    // 2. (اختياري) التحقق من تفرد 'student_number' إذا كان ذلك مطلوبًا
+    try {
+        const studentsRef = collection(db, 'students');
+        const q = query(studentsRef, where('student_number', '==', student_number));
+        const querySnapshot = await getDocs(q);
 
-      try {
-        await setDoc(doc(db, "students", newId.toString()), {
+        if (!querySnapshot.empty) {
+            alert("❌ رقم الطالب هذا موجود بالفعل. الرجاء إدخال رقم فريد.");
+            return;
+        }
+
+        // 3. إضافة الطالب بمعرف مستند تلقائي من Firestore
+        const docRef = await addDoc(collection(db, "students"), {
           name: name,
+          student_number: student_number, // حفظ الرقم الذي أدخله المستخدم
           grade: grade,
           email: email,
           phone: phone
         });
 
-        await updateDoc(counterRef, {
-          IDlastStudent: increment(1)
-        });
+        alert("✅ تمت إضافة الطالب بنجاح! المعرف الداخلي (التلقائي من Firestore) هو: " + docRef.id);
 
-        alert("✅ تمت إضافة الطالب بنجاح برقم: " + newId);
-      } catch (e) {
-        alert("❌ خطأ: " + e);
-      }
-    } else {
-      alert("❌ مستند العداد غير موجود، يرجى التأكد من إنشائه أولًا.");
+        // 4. إعادة تعيين حقول النموذج
+        document.getElementById('name').value = '';
+        document.getElementById('student_number').value = '';
+        document.getElementById('grade').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('phone').value = '';
+
+    } catch (e) {
+      alert("❌ خطأ في إضافة الطالب: " + e.message);
     }
   };
 </script>
