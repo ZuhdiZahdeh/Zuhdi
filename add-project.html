@@ -4,7 +4,7 @@
   <title>إضافة مشروع</title>
 </head>
 <body>
-  <input type="text" id="ID-students" placeholder="معرف الطالب"><br>
+  <input type="text" id="student_number" placeholder="رقم الطالب (المعرف اليدوي)"><br> 
   <input type="text" id="title" placeholder="عنوان المشروع"><br>
   <textarea id="description" placeholder="وصف المشروع"></textarea><br>
   <input type="date" id="submission_date"><br>
@@ -15,16 +15,33 @@ import { db } from './firebase-init.js';
 import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
 document.getElementById('ID-projects').onclick = async function() {
+  const student_id = document.getElementById('student_number').value; // هذا سيكون 'student_number'
+  const title = document.getElementById('title').value;
+  const description = document.getElementById('description').value;
+  const submission_date_str = document.getElementById('submission_date').value;
+
+  // التحقق من صحة المدخلات
+  if (!student_id || !title || !description || !submission_date_str) {
+    alert("الرجاء تعبئة جميع حقول المشروع المطلوبة.");
+    return;
+  }
+
   try {
     const docRef = await addDoc(collection(db, "projects"), {
-      student_id: document.getElementById('ID-students').value,
-      title: document.getElementById('title').value,
-      description: document.getElementById('description').value,
-      submission_date: document.getElementById('submission_date').value
+      student_id: student_id, // هنا ستستخدم الرقم الذي كتبته أنت
+      title: title,
+      description: description,
+      submission_date: new Date(submission_date_str) // Firestore سيحولها تلقائيًا إلى Timestamp
     });
-    alert("تمت إضافة المشروع: " + docRef.id);
+    alert("✅ تمت إضافة المشروع بنجاح! المعرف التلقائي: " + docRef.id);
+
+    // إعادة تعيين حقول النموذج
+    document.getElementById('student_number').value = '';
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('submission_date').value = '';
   } catch (error) {
-    alert("خطأ: " + error);
+    alert("❌ خطأ في إضافة المشروع: " + error.message);
   }
 };
 </script>
