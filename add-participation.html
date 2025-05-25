@@ -1,41 +1,99 @@
-<!-- === add-student.html ===25-05-25 === -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>اضافة مشروع جديد</title>
+  <title>إضافة مشاركة</title>
   <link rel="stylesheet" href="main-style.css">
   <link rel="stylesheet" href="students-style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="form-styles.css"> <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <script src="includes/include-html.js"></script>
 </head>
-<body class="index-page">
-<div include-html="includes/header.html"></div>
-  <input type="text" id="ID-students" placeholder="معرف الطالب"><br>
-  <input type="text" id="ID-projects" placeholder="معرف المشروع"><br>
-  <input type="text" id="type" placeholder="نوع المشاركة"><br>
-  <input type="text" id="category" placeholder="الفئة"><br>
-  <input type="url" id="video_link" placeholder="رابط الفيديو"><br>
-  <button id="ID-participation">إضافة المشاركة</button>
+<body class="add-participation-page">
 
-<script type="module">
-import { db } from './firebase-init.js';
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+  <div include-html="includes/header.html"></div>
+  
+  <main class="form-container">
+    <h2>إضافة مشاركة جديدة</h2>
 
-document.getElementById('participation').onclick = async function() {
-  try {
-    const docRef = await addDoc(collection(db, "participation"), {
-      student_id: document.getElementById('ID-students').value,
-      project_id: document.getElementById('ID-projects').value,
-      type: document.getElementById('type').value,
-      category: document.getElementById('category').value,
-      video_link: document.getElementById('video_link').value)
-    });
-    alert("تمت إضافة المشاركة: " + docRef.id);
-  } catch (error) {
-    alert("خطأ: " + error);
-  }
-};
-</script>
+    <div class="form-group">
+      <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
+      <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
+    </div>
+
+    <div class="form-group">
+      <label for="ID-projects">معرف المشروع (الرقم اليدوي/العنوان):</label>
+      <input type="text" id="ID-projects" placeholder="ادخل معرف المشروع">
+    </div>
+
+    <div class="form-group">
+      <label for="type">نوع المشاركة:</label>
+      <input type="text" id="type" placeholder="ادخل نوع المشاركة (مثال: فيديو، صورة)">
+    </div>
+
+    <div class="form-group">
+      <label for="category">الفئة:</label>
+      <input type="text" id="category" placeholder="ادخل فئة المشاركة (مثال: تقني، فني)">
+    </div>
+
+    <div class="form-group">
+      <label for="video_link">رابط الفيديو:</label>
+      <input type="url" id="video_link" placeholder="ادخل رابط الفيديو (إذا كان نوع المشاركة فيديو)">
+    </div>
+
+    <button id="ID-participation" class="form-button">إضافة المشاركة</button>
+
+    <div id="status-message" class="message"></div>
+  </main>
+
+  <div include-html="includes/footer.html"></div>
+  <script src="main-script.js"></script>
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module">
+    import { db } from './firebase-init.js';
+    import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+
+    function showMessage(msg, type) {
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = msg;
+      statusMessage.className = `message ${type}`;
+      statusMessage.style.display = 'block';
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 5000);
+    }
+
+    document.getElementById('ID-participation').onclick = async function() {
+      const student_id = document.getElementById('ID-students').value.trim();
+      const project_id = document.getElementById('ID-projects').value.trim();
+      const type = document.getElementById('type').value.trim();
+      const category = document.getElementById('category').value.trim();
+      const video_link = document.getElementById('video_link').value.trim();
+
+      if (!student_id || !project_id || !type || !category || !video_link) {
+        showMessage("الرجاء تعبئة جميع حقول المشاركة المطلوبة.", "error");
+        return;
+      }
+
+      try {
+        const docRef = await addDoc(collection(db, "participation"), {
+          student_id: student_id,
+          project_id: project_id,
+          type: type,
+          category: category,
+          video_link: video_link
+        });
+        showMessage("✅ تمت إضافة المشاركة بنجاح! المعرف التلقائي: " + docRef.id, "success");
+
+        document.getElementById('ID-students').value = '';
+        document.getElementById('ID-projects').value = '';
+        document.getElementById('type').value = '';
+        document.getElementById('category').value = '';
+        document.getElementById('video_link').value = '';
+      } catch (error) {
+        showMessage("❌ خطأ في إضافة المشاركة: " + error.message, "error");
+      }
+    };
+  </script>
+
 </body>
 </html>
