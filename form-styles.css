@@ -1,0 +1,123 @@
+/* form-styles.css */
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* توسيط المحتوى أفقياً */
+  justify-content: flex-start; /* البدء من الأعلى عمودياً */
+  min-height: 100vh; /* تأكد من أن الـ body يغطي الشاشة بالكامل */
+  background-color: var(--body-bg-color); /* استخدام لون الخلفية من main-style.css */
+  padding: 20px; /* بعض المسافة من الحواف */
+  box-sizing: border-box; /* لا تزد الحشوة حجم العنصر */
+}
+
+.form-container {
+  background-color: var(--card-bg-color); /* استخدام لون خلفية البطاقة */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 500px; /* تحديد أقصى عرض للنموذج */
+  text-align: center;
+  margin-top: 80px; /* مسافة من الهيدر */
+  direction: rtl; /* التأكد من اتجاه النص */
+}
+
+.form-container h2 {
+  color: var(--heading-color); /* لون العنوان */
+  margin-bottom: 25px;
+  font-size: 1.8em;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  display: inline-block; /* لجعل الخط السفلي يتبع طول النص */
+}
+
+.form-group {
+  margin-bottom: 20px; /* مسافة بين كل حقل إدخال */
+  text-align: right; /* محاذاة التسميات والنصوص لليمين */
+}
+
+.form-group label {
+  display: block; /* لجعل الـ label يأخذ سطراً كاملاً */
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="url"], /* أضف هذا للروابط */
+.form-group input[type="date"], /* أضف هذا للتاريخ */
+.form-group textarea /* أضف هذا لمناطق النص الكبيرة */
+{
+  width: calc(100% - 20px); /* عرض الحقل مع مراعاة الحشوة */
+  padding: 12px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1em;
+  color: var(--text-color);
+  background-color: var(--input-bg-color);
+  box-sizing: border-box; /* للتأكد من أن padding لا يزيد عن عرض العنصر */
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder,
+.form-group input[type="url"]::placeholder,
+.form-group input[type="date"]::placeholder,
+.form-group textarea::placeholder {
+  color: var(--placeholder-color);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="url"]:focus,
+.form-group input[type="date"]:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.form-button {
+  background-color: var(--primary-color); /* لون الزر الأساسي */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.form-button:hover {
+  background-color: var(--primary-dark-color); /* لون أغمق عند التحويم */
+}
+
+/* رسائل التنبيه والخطأ */
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  display: none; /* مخفية افتراضياً */
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* لضمان عمل include-html بشكل صحيح ولفظي */
+.include-html-placeholder {
+    display: none; /* إخفاء العنصر المؤقت */
+}
