@@ -1,56 +1,91 @@
-<!-- === add-project.html ===25-05-25 === -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>اضافة فيديو جديدة</title>
+  <title>إضافة مشروع</title>
   <link rel="stylesheet" href="main-style.css">
   <link rel="stylesheet" href="students-style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="form-styles.css"> <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <script src="includes/include-html.js"></script>
 </head>
-<body class="index-page">
-<div include-html="includes/header.html"></div>
-  <input type="text" id="student_number" placeholder="رقم الطالب (المعرف اليدوي)"><br> 
-  <input type="text" id="title" placeholder="عنوان المشروع"><br>
-  <textarea id="description" placeholder="وصف المشروع"></textarea><br>
-  <input type="date" id="submission_date"><br>
-  <button id="ID-projects">إضافة المشروع</button>
+<body class="add-project-page">
 
-<script type="module">
-import { db } from './firebase-init.js';
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+  <div include-html="includes/header.html"></div>
+  
+  <main class="form-container">
+    <h2>إضافة مشروع جديد</h2>
 
-document.getElementById('ID-projects').onclick = async function() {
-  const student_id = document.getElementById('student_number').value; // هذا سيكون 'student_number'
-  const title = document.getElementById('title').value;
-  const description = document.getElementById('description').value;
-  const submission_date_str = document.getElementById('submission_date').value;
+    <div class="form-group">
+      <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
+      <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
+    </div>
 
-  // التحقق من صحة المدخلات
-  if (!student_id || !title || !description || !submission_date_str) {
-    alert("الرجاء تعبئة جميع حقول المشروع المطلوبة.");
-    return;
-  }
+    <div class="form-group">
+      <label for="title">عنوان المشروع:</label>
+      <input type="text" id="title" placeholder="ادخل عنوان المشروع">
+    </div>
 
-  try {
-    const docRef = await addDoc(collection(db, "projects"), {
-      student_id: student_id, // هنا ستستخدم الرقم الذي كتبته أنت
-      title: title,
-      description: description,
-      submission_date: new Date(submission_date_str) // Firestore سيحولها تلقائيًا إلى Timestamp
-    });
-    alert("✅ تمت إضافة المشروع بنجاح! المعرف التلقائي: " + docRef.id);
+    <div class="form-group">
+      <label for="description">وصف المشروع:</label>
+      <textarea id="description" placeholder="ادخل وصف المشروع بالتفصيل" rows="5"></textarea>
+    </div>
 
-    // إعادة تعيين حقول النموذج
-    document.getElementById('student_number').value = '';
-    document.getElementById('title').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('submission_date').value = '';
-  } catch (error) {
-    alert("❌ خطأ في إضافة المشروع: " + error.message);
-  }
-};
-</script>
+    <div class="form-group">
+      <label for="submission_date">تاريخ التسليم:</label>
+      <input type="date" id="submission_date">
+    </div>
+
+    <button id="ID-projects" class="form-button">إضافة المشروع</button>
+
+    <div id="status-message" class="message"></div>
+  </main>
+
+  <div include-html="includes/footer.html"></div>
+  <script src="main-script.js"></script>
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module">
+    import { db } from './firebase-init.js';
+    import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+
+    function showMessage(msg, type) {
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = msg;
+      statusMessage.className = `message ${type}`;
+      statusMessage.style.display = 'block';
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 5000);
+    }
+
+    document.getElementById('ID-projects').onclick = async function() {
+      const student_id = document.getElementById('ID-students').value.trim();
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const submission_date_str = document.getElementById('submission_date').value;
+
+      if (!student_id || !title || !description || !submission_date_str) {
+        showMessage("الرجاء تعبئة جميع حقول المشروع المطلوبة.", "error");
+        return;
+      }
+
+      try {
+        const docRef = await addDoc(collection(db, "projects"), {
+          student_id: student_id,
+          title: title,
+          description: description,
+          submission_date: new Date(submission_date_str)
+        });
+        showMessage("✅ تمت إضافة المشروع بنجاح! المعرف التلقائي: " + docRef.id, "success");
+
+        document.getElementById('ID-students').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('submission_date').value = '';
+      } catch (error) {
+        showMessage("❌ خطأ في إضافة المشروع: " + error.message, "error");
+      }
+    };
+  </script>
+
 </body>
 </html>
