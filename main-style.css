@@ -6,6 +6,7 @@
 [include-html].loaded {
   display: block;
 }
+/* === main-style.css بعد التعديلات === */
 :root {
   --ai-color: #eef6ff;
   --quran-color: #fff0f6;
@@ -14,7 +15,19 @@
   --primary-color: #4CAF50;
   --secondary-color: #FFC107;
   --text-color: #333;
+
+  /* متغيرات جديدة لـ form-styles.css */
+  --body-bg-color: #f5f7fa; /* نفس لون خلفية الـ body الحالي */
+  --card-bg-color: #ffffff; /* لون أبيض مناسب للبطاقات */
+  --border-color: #ddd; /* لون حدود لحقول الإدخال */
+  --input-bg-color: #ffffff; /* لون خلفية لحقول الإدخال */
+  --placeholder-color: #999; /* لون للنصوص الوصفية */
+  --primary-dark-color: #0a8f0a; /* لون أغمق للزر عند التحويم */
+  --primary-color-rgb: 76, 175, 80; /* قيمة RGB لـ primary-color */
+  --heading-color: #2c3e50; /* لون العناوين */
 }
+
+/* ... (بقية تنسيقات main-style.css) ... */
 
 header {
   display: flex;
