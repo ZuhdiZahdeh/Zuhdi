@@ -16,7 +16,6 @@
   <section class="add-section"> 
     <main class="form-container">
       <h2>إضافة طالب جديد</h2>
-
       <div class="form-group">
         <label for="name">اسم الطالب:</label>
         <input type="text" id="name" placeholder="ادخل اسم الطالب كاملاً">
@@ -28,9 +27,10 @@
       </div>
 
       <div class="form-group">
-        <label for="classe">الصف:</label>
-        <select id="classe">
-          <option value="">جارٍ تحميل الصفوف...</option> </select>
+        <label for="grade">الصف:</label>
+        <select id="grade">
+          <option value="">جارٍ تحميل الصفوف...</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -67,52 +67,49 @@
     }
 
     // دالة لجلب الصفوف وملء القائمة المنسدلة
-    async function loadClasses() {
-      const classeSelect = document.getElementById('classes');
-      classeSelect.innerHTML = '<option value="">جارٍ تحميل الصفوف...</option>'; // إعادة تعيين رسالة التحميل
+    async function loadGrades() {
+      const gradeSelect = document.getElementById('grade');
+      gradeSelect.innerHTML = '<option value="">جارٍ تحميل الصفوف...</option>';
 
       try {
+        // تغيير اسم المجموعة من 'grades' إلى 'classes'
         const classesRef = collection(db, 'classes');
-        // استعلام لجلب الصفوف مرتبة حسب حقل 'order'
+        // الاستعلام لترتيب الصفوف حسب حقل 'order'
         const q = query(classesRef, orderBy('order', 'asc'));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-          classeSelect.innerHTML = '<option value="">لا توجد صفوف متاحة</option>';
+          gradeSelect.innerHTML = '<option value="">لا توجد صفوف متاحة</option>';
           return;
         }
 
-        // مسح الخيارات الحالية (رسالة "جارٍ التحميل")
         gradeSelect.innerHTML = '<option value="">اختر الصف</option>'; // الخيار الأول الافتراضي
 
         querySnapshot.forEach((doc) => {
-          const classeData = doc.data();
+          const classData = doc.data();
           const option = document.createElement('option');
-          option.value =classesData.name; // قيمة الخيار ستكون اسم الصف
-          option.textContent = classeData.name; // النص الظاهر سيكون اسم الصف
-          classeSelect.appendChild(option);
+          option.value = classData.name; // قيمة الخيار ستكون اسم الصف من حقل 'name'
+          option.textContent = classData.name; // النص الظاهر سيكون اسم الصف من حقل 'name'
+          gradeSelect.appendChild(option);
         });
 
       } catch (error) {
         console.error("خطأ في جلب الصفوف:", error);
-        classeSelect.innerHTML = '<option value="">خطأ في التحميل</option>';
+        gradeSelect.innerHTML = '<option value="">خطأ في التحميل</option>';
         showMessage("❌ تعذر تحميل قائمة الصفوف. الرجاء المحاولة لاحقًا.", "error");
       }
     }
 
-    // استدعاء دالة جلب الصفوف عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', loadGrades);
 
-
-    // منطق إضافة الطالب (بدون تغيير كبير هنا)
     document.getElementById('ID-students').onclick = async function() {
       const name = document.getElementById('name').value.trim();
       const student_number = document.getElementById('student_number').value.trim();
-      const classe = document.getElementById('grade').value; // جلب القيمة المختارة
+      const grade = document.getElementById('grade').value;
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
 
-      if (!name || !student_number || !classe || !email || !phone) {
+      if (!name || !student_number || !grade || !email || !phone) {
         showMessage("الرجاء تعبئة جميع الحقول المطلوبة واختيار الصف.", "error");
         return;
       }
@@ -130,17 +127,16 @@
           const docRef = await addDoc(collection(db, "students"), {
             name: name,
             student_number: student_number,
-            classe: classe,
+            grade: grade,
             email: email,
             phone: phone
           });
 
           showMessage("✅ تمت إضافة الطالب بنجاح! المعرف الداخلي (التلقائي من Firestore) هو: " + docRef.id, "success");
 
-          // إعادة تعيين حقول النموذج
           document.getElementById('name').value = '';
           document.getElementById('student_number').value = '';
-          document.getElementById('classe').value = ''; // لإعادة تعيين القائمة المنسدلة إلى الخيار الأول "اختر الصف"
+          document.getElementById('grade').value = '';
           document.getElementById('email').value = '';
           document.getElementById('phone').value = '';
 
@@ -149,6 +145,6 @@
       }
     };
   </script>
-  </div>
+
 </body>
 </html>
