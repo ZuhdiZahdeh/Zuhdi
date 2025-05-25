@@ -1,308 +1,58 @@
-/* === main-style.css بعد التعديلات === */
-[include-html] {
-  display: none;
-}
-
-[include-html].loaded {
-  display: block;
-}
-/* === main-style.css بعد التعديلات === */
-:root {
-  --ai-color: #eef6ff;
-  --quran-color: #fff0f6;
-  --english-day-color: #fff8e6;
-  --photos-color: #f4f9f4;
-  --primary-color: #4CAF50;
-  --secondary-color: #FFC107;
-  --text-color: #333;
-
-  /* متغيرات جديدة لـ form-styles.css */
-  --body-bg-color: #f5f7fa; /* نفس لون خلفية الـ body الحالي */
-  --card-bg-color: #ffffff; /* لون أبيض مناسب للبطاقات */
-  --border-color: #ddd; /* لون حدود لحقول الإدخال */
-  --input-bg-color: #ffffff; /* لون خلفية لحقول الإدخال */
-  --placeholder-color: #999; /* لون للنصوص الوصفية */
-  --primary-dark-color: #0a8f0a; /* لون أغمق للزر عند التحويم */
-  --primary-color-rgb: 76, 175, 80; /* قيمة RGB لـ primary-color */
-  --heading-color: #2c3e50; /* لون العناوين */
-}
-
-/* ... (بقية تنسيقات main-style.css) ... */
-
-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-image: url('images/bg-innovations-01.png');
-  background-size: cover;
-  background-position: center;
-  padding: 40px 20px 20px 20px;
-  min-height: 250px;
-  color: #ffffff;
-  position: relative;
-}
-
-header .logo {
-  max-width: 80px;
-  height: auto;
-  background-color: transparent;
-}
-
-header h1 {
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 10px;
-  border-radius: 8px;
-  font-family: "Cairo", sans-serif;
-  font-size: 3rem;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  margin-top: 10px;
-}
-
-header nav {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-nav a {
-  color: #FFFFFF;
-  padding: 8px 15px;
-  margin: 0 5px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.5rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-nav a:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-body {
-  font-family: 'Cairo', sans-serif;
-  background-color: #f5f7fa;
-  direction: rtl;
-  text-align: right;
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
-
-
-/* التنسيقات الجديدة لـ page-wrapper */
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* ليغطي الارتفاع الكامل للعرض */
-  width: 100%; /* ليغطي العرض الكامل */
-  box-sizing: border-box;
-  /* يمكنك هنا وضع الـ padding: 20px; الذي كان في الـ body إذا أردته لكل محتوى الصفحة */
-}
-
-/* Footer */
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 15px;
-  text-align: center;
-  margin-top: auto; /* هذا مهم جداً لدفعه للأسفل في حاوية flex */
-  width: 100%; /* لضمان أنه يأخذ العرض الكامل */
-  box-sizing: border-box; /* لتضمين الحشوة في العرض */
-}
-
-
-h1, h2, h3, h4 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-p {
-  font-size: 18px;
-  line-height: 1.6;
-  text-align: center;
-}
-
-ul {
-  list-style-type: none;
+/* === students-style.css ===18-05-25 === */
+.project-info {
   padding: 20px;
+  text-align: right;
 }
 
-ul li {
+.project-info h2 {
   color: #2c3e50;
-  margin-bottom: 20px;
-  text-align: center;
-}
-h2 i {
-  margin-left: 10px;
-  color: #4CAF50;
-}
-
-
-
-.container {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 30px;
-  max-width: 1000px;
-  margin: 40px auto;
-  text-align: center;
-}
-
-iframe {
-  width: 50% !important;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  margin: 10px auto;
-  display: block;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.download-button, .open-video, .read-more-button, #topBtn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 24px;
-  background-color: #FF8C00;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.open-video:hover, .download-button:hover, .read-more-button:hover, #topBtn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-/* زر العودة للأعلى */
-#topBtn {
-background-color: #4CAF50;
-color: white;
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  border-radius: 50%;
-  padding: 12px;
-  font-size: 20px;
-  display: none;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-
-.gallery img {
-  width: 250px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-
-.gallery img:hover {
-  transform: scale(1.2);
-}
-
-
-.projects-grid, .gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.project-card, .winner-card {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-
-.project-card:hover, .winner-card:hover {
-  transform: translateY(-5px);
-}
-
-.project-card img, .winner-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-.winner-card .project-info {
-  padding: 15px;
-  text-align: center;
-}
-
-.winner-card h2 {
-  color: #e67e22;
+  font-size: 1.4rem;
   margin-bottom: 10px;
 }
 
-.winner-card p {
+.project-info p {
   font-size: 0.9rem;
+  margin: 5px 0;
   color: #555;
 }
-.thumbnail {
-  width: 250px;
-  height: auto;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+.short-desc {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #777;
 }
 
-.thumbnail:hover {
+.view-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.view-button:hover {
+  background-color: #27ae60;
   transform: scale(1.05);
 }
 
-.section {
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  border: 5px solid transparent;
+.read-more-content {
+  display: none; 
 }
 
-.ai-section {
-  background-color: var(--ai-color);
-  border-color: #2196F3;
+/* توحيد عرض بطاقات المشاريع */
+.project-card {
+  width: 300px !important;  /* يمكنك ضبط العرض حسب رغبتك */
+  box-sizing: border-box;
 }
 
-.quran-section {
-  background-color: var(--quran-color);
-  border-color: #d06e8f;
-}
-
-.english-day-section {
-  background-color: var(--english-day-color);
-  border-color: #FFC107;
-}
-
-.photos-section {
-  background-color: var(--photos-color);
-  border-color: #4CAF50;
-}
-
+/* جعل التصميم متجاوبًا مع الشاشات الصغيرة */
 @media (max-width: 768px) {
-  .winner-card {
-    display: block;
-    width: 90%;
-    margin: 10px auto;
-  }
-}
-
-@media (max-width: 600px) {
-  .container {
-    width: 95%;
-    padding: 10px;
-  }
-
-  iframe, .project-video {
-    height: 220px;
+  .project-card {
+    width: 90% !important;
+    margin: 0 auto;  /* لتوسيط البطاقات في الشاشات الصغيرة */
   }
 }
