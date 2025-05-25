@@ -6,22 +6,38 @@ body {
   align-items: center; /* توسيط المحتوى أفقياً */
   justify-content: flex-start; /* البدء من الأعلى عمودياً */
   min-height: 100vh; /* تأكد من أن الـ body يغطي الشاشة بالكامل */
-  background-color: var(--body-bg-color); /* استخدام لون الخلفية من main-style.css */
-  padding: 20px; /* بعض المسافة من الحواف */
-  box-sizing: border-box; /* لا تزد الحشوة حجم العنصر */
+  background-color: var(--body-bg-color);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.add-section { /* تأكد من أن هذا القسم يتمدد جيداً */
+  background-color: #eef6ff;
+  border-right: 5px solid #2196F3;
+  border-left: 5px solid #2196F3;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 800px; /* يمكن زيادتها إذا أردت قسماً أوسع */
+  width: 100%; /* تأكد من أنه يأخذ العرض المتاح */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .form-container {
-  background-color: var(--card-bg-color); /* استخدام لون خلفية البطاقة */
+  background-color: var(--card-bg-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  width: 100%;
+  width: 100%; /* اجعله يأخذ 100% من عرض الـ add-section أو الـ body */
   max-width: 500px; /* تحديد أقصى عرض للنموذج */
   text-align: center;
-  margin-top: 80px; /* مسافة من الهيدر */
-  direction: rtl; /* التأكد من اتجاه النص */
+  /* margin-top: 80px; */ /* أزل هذا الهامش، لأن الـ section ستتحكم في المسافات الآن */
+  direction: rtl;
 }
+
+/* ... (بقية التنسيقات كما هي) ... */
+
+
 
 .form-container h2 {
   color: var(--heading-color); /* لون العنوان */
@@ -117,22 +133,7 @@ body {
   border: 1px solid #f5c6cb;
 }
 
-/* لضمان عمل include-html بشكل صحيح ولفظي */
-.include-html-placeholder {
-    display: none; /* إخفاء العنصر المؤقت */
-}
 
-/* تنسيق section.add-section الجديد */
-.add-section {
-  background-color: #eef6ff;
-  border-right: 5px solid #2196F3;
-  border-left: 5px solid #2196F3;
-  padding: 30px; /* إضافة بعض المسافة الداخلية */
-  margin: 30px auto; /* توسيط القسم وإضافة مسافة من الأعلى والأسفل */
-  max-width: 800px; /* تحديد أقصى عرض للقسم للحفاظ على المظهر */
-  border-radius: 10px; /* حواف مستديرة لتتناسب مع تصميم البطاقة */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* ظل خفيف */
-}
 
 
 /* تعديل تنسيق الزر ليستخدم خصائص .view-button */
@@ -156,5 +157,10 @@ body {
 .form-button:hover, .view-button:hover {
   background-color: var(--primary-dark-color, #0a8f0a); /* لون أغمق عند التحويم */
   transform: translateY(-2px); /* تأثير رفع بسيط */
+}
+
+/* لضمان عمل include-html بشكل صحيح ولفظي */
+.include-html-placeholder {
+    display: none; /* إخفاء العنصر المؤقت */
 }
 
