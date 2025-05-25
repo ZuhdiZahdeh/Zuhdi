@@ -1,16 +1,4 @@
 /* form-styles.css */
-
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* توسيط المحتوى أفقياً */
-  justify-content: flex-start; /* البدء من الأعلى عمودياً */
-  min-height: 100vh; /* تأكد من أن الـ body يغطي الشاشة بالكامل */
-  background-color: var(--body-bg-color);
-  padding: 20px;
-  box-sizing: border-box;
-}
-
 .add-section { /* تأكد من أن هذا القسم يتمدد جيداً */
   background-color: #eef6ff;
   border-right: 5px solid #2196F3;
@@ -163,4 +151,3 @@ body {
 .include-html-placeholder {
     display: none; /* إخفاء العنصر المؤقت */
 }
-
