@@ -1,76 +1,111 @@
-<!-- === add-student.html ===25-05-25 === -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>اضافة طالب جديد</title>
+  <title>إضافة طالب جديد</title>
   <link rel="stylesheet" href="main-style.css">
   <link rel="stylesheet" href="students-style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="form-styles.css"> <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <script src="includes/include-html.js"></script>
 </head>
-<body class="index-page">
-<div include-html="includes/header.html"></div>
-<input type="text" id="name" placeholder="اسم الطالب">
-<input type="text" id="student_number" placeholder="رقم الطالب (تكتبه يدوياً)"> 
-<input type="text" id="grade" placeholder="الصف">
-<input type="email" id="email" placeholder="البريد الإلكتروني">
-<input type="text" id="phone" placeholder="الهاتف">
+<body class="add-student-page">
 
-<button id="ID-students">إضافة الطالب</button>
+  <div include-html="includes/header.html"></div>
+  
+  <main class="form-container">
+    <h2>إضافة طالب جديد</h2>
 
-<script type="module">
-  import { db } from './firebase-init.js';
-  // سنستخدم addDoc لإنشاء مستند بمعرف تلقائي، ولا نحتاج لـ doc, getDoc, setDoc, updateDoc, increment هنا لإضافة الطالب
-  import { collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+    <div class="form-group">
+      <label for="name">اسم الطالب:</label>
+      <input type="text" id="name" placeholder="ادخل اسم الطالب كاملاً">
+    </div>
 
-  document.getElementById('ID-students').onclick = async function() {
-    const name = document.getElementById('name').value;
-    const student_number = document.getElementById('student_number').value; // جلب قيمة الحقل الجديد
-    const grade = document.getElementById('grade').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
+    <div class="form-group">
+      <label for="student_number">رقم الطالب:</label>
+      <input type="text" id="student_number" placeholder="ادخل رقم الطالب (مثال: 1001)">
+    </div>
 
-    // 1. التحقق من صحة المدخلات الأساسية
-    if (!name || !student_number || !grade || !email || !phone) {
-      alert("الرجاء تعبئة جميع الحقول المطلوبة.");
-      return;
+    <div class="form-group">
+      <label for="grade">الصف:</label>
+      <input type="text" id="grade" placeholder="ادخل صف الطالب (مثال: العاشر 'أ')">
+    </div>
+
+    <div class="form-group">
+      <label for="email">البريد الإلكتروني:</label>
+      <input type="email" id="email" placeholder="ادخل البريد الإلكتروني للطالب">
+    </div>
+
+    <div class="form-group">
+      <label for="phone">الهاتف:</label>
+      <input type="text" id="phone" placeholder="ادخل رقم هاتف الطالب">
+    </div>
+
+    <button id="ID-students" class="form-button">إضافة الطالب</button>
+
+    <div id="status-message" class="message"></div>
+  </main>
+
+  <div include-html="includes/footer.html"></div>
+  <script src="main-script.js"></script>
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module">
+    import { db } from './firebase-init.js';
+    import { collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    // دالة لعرض الرسائل (يمكن نقلها إلى ملف JS مشترك إذا استخدمتها في أكثر من صفحة)
+    function showMessage(msg, type) {
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = msg;
+      statusMessage.className = `message ${type}`;
+      statusMessage.style.display = 'block';
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 5000);
     }
 
-    // 2. (اختياري) التحقق من تفرد 'student_number' إذا كان ذلك مطلوبًا
-    try {
-        const studentsRef = collection(db, 'students');
-        const q = query(studentsRef, where('student_number', '==', student_number));
-        const querySnapshot = await getDocs(q);
+    document.getElementById('ID-students').onclick = async function() {
+      const name = document.getElementById('name').value.trim();
+      const student_number = document.getElementById('student_number').value.trim();
+      const grade = document.getElementById('grade').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
 
-        if (!querySnapshot.empty) {
-            alert("❌ رقم الطالب هذا موجود بالفعل. الرجاء إدخال رقم فريد.");
-            return;
-        }
+      if (!name || !student_number || !grade || !email || !phone) {
+        showMessage("الرجاء تعبئة جميع الحقول المطلوبة.", "error");
+        return;
+      }
 
-        // 3. إضافة الطالب بمعرف مستند تلقائي من Firestore
-        const docRef = await addDoc(collection(db, "students"), {
-          name: name,
-          student_number: student_number, // حفظ الرقم الذي أدخله المستخدم
-          grade: grade,
-          email: email,
-          phone: phone
-        });
+      try {
+          const studentsRef = collection(db, 'students');
+          const q = query(studentsRef, where('student_number', '==', student_number));
+          const querySnapshot = await getDocs(q);
 
-        alert("✅ تمت إضافة الطالب بنجاح! المعرف الداخلي (التلقائي من Firestore) هو: " + docRef.id);
+          if (!querySnapshot.empty) {
+              showMessage("❌ رقم الطالب هذا موجود بالفعل. الرجاء إدخال رقم فريد.", "error");
+              return;
+          }
 
-        // 4. إعادة تعيين حقول النموذج
-        document.getElementById('name').value = '';
-        document.getElementById('student_number').value = '';
-        document.getElementById('grade').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phone').value = '';
+          const docRef = await addDoc(collection(db, "students"), {
+            name: name,
+            student_number: student_number,
+            grade: grade,
+            email: email,
+            phone: phone
+          });
 
-    } catch (e) {
-      alert("❌ خطأ في إضافة الطالب: " + e.message);
-    }
-  };
-</script>
+          showMessage("✅ تمت إضافة الطالب بنجاح! المعرف الداخلي (التلقائي من Firestore) هو: " + docRef.id, "success");
+
+          document.getElementById('name').value = '';
+          document.getElementById('student_number').value = '';
+          document.getElementById('grade').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('phone').value = '';
+
+      } catch (e) {
+        showMessage("❌ خطأ في إضافة الطالب: " + e.message, "error");
+      }
+    };
+  </script>
 
 </body>
 </html>
