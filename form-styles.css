@@ -52,16 +52,18 @@
 .form-group input[type="email"],
 .form-group input[type="url"], /* أضف هذا للروابط */
 .form-group input[type="date"], /* أضف هذا للتاريخ */
-.form-group textarea /* أضف هذا لمناطق النص الكبيرة */
+.form-group textarea, /* أضف هذا لمناطق النص الكبيرة */
+.form-group select /* تأكد من وجود select هنا */
 {
-  width: calc(100% - 20px); /* عرض الحقل مع مراعاة الحشوة */
+  width: calc(100% - 20px);
   padding: 12px 10px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   font-size: 1em;
   color: var(--text-color);
   background-color: var(--input-bg-color);
-  box-sizing: border-box; /* للتأكد من أن padding لا يزيد عن عرض العنصر */
+  box-sizing: border-box;
+  height: auto; /* تأكد من أن الارتفاع ليس ثابتاً بشكل يعيق القائمة */
 }
 
 .form-group input[type="text"]::placeholder,
