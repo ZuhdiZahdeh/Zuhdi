@@ -5,40 +5,40 @@
   <title>إضافة مشروع</title>
   <link rel="stylesheet" href="main-style.css">
   <link rel="stylesheet" href="students-style.css">
-  <link rel="stylesheet" href="form-styles.css"> <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="form-styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <script src="includes/include-html.js"></script>
 </head>
 <body class="add-project-page">
 
   <div include-html="includes/header.html"></div>
   
-  <main class="form-container">
-    <h2>إضافة مشروع جديد</h2>
+  <section class="add-section"> <main class="form-container">
+      <h2>إضافة مشروع جديد</h2>
 
-    <div class="form-group">
-      <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
-      <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
-    </div>
+      <div class="form-group">
+        <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
+        <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
+      </div>
 
-    <div class="form-group">
-      <label for="title">عنوان المشروع:</label>
-      <input type="text" id="title" placeholder="ادخل عنوان المشروع">
-    </div>
+      <div class="form-group">
+        <label for="title">عنوان المشروع:</label>
+        <input type="text" id="title" placeholder="ادخل عنوان المشروع">
+      </div>
 
-    <div class="form-group">
-      <label for="description">وصف المشروع:</label>
-      <textarea id="description" placeholder="ادخل وصف المشروع بالتفصيل" rows="5"></textarea>
-    </div>
+      <div class="form-group">
+        <label for="description">وصف المشروع:</label>
+        <textarea id="description" placeholder="ادخل وصف المشروع بالتفصيل" rows="5"></textarea>
+      </div>
 
-    <div class="form-group">
-      <label for="submission_date">تاريخ التسليم:</label>
-      <input type="date" id="submission_date">
-    </div>
+      <div class="form-group">
+        <label for="submission_date">تاريخ التسليم:</label>
+        <input type="date" id="submission_date">
+      </div>
 
-    <button id="ID-projects" class="form-button">إضافة المشروع</button>
-
-    <div id="status-message" class="message"></div>
-  </main>
+      <button id="ID-projects" class="view-button">إضافة المشروع</button> <div id="status-message" class="message"></div>
+    </main>
+  </section>
 
   <div include-html="includes/footer.html"></div>
   <script src="main-script.js"></script>
