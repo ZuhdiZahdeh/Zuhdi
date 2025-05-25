@@ -121,3 +121,13 @@ body {
 .include-html-placeholder {
     display: none; /* إخفاء العنصر المؤقت */
 }
+.add-section {
+  background-color: #eef6ff;
+  border-right: 5px solid #2196F3;
+  border-left: 5px solid #2196F3;
+  padding: 30px; /* إضافة بعض المسافة الداخلية */
+  margin: 30px auto; /* توسيط القسم وإضافة مسافة من الأعلى والأسفل */
+  max-width: 800px; /* تحديد أقصى عرض للقسم للحفاظ على المظهر */
+  border-radius: 10px; /* حواف مستديرة لتتناسب مع تصميم البطاقة */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* ظل خفيف */
+}
