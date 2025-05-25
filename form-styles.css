@@ -121,6 +121,8 @@ body {
 .include-html-placeholder {
     display: none; /* إخفاء العنصر المؤقت */
 }
+
+/* تنسيق section.add-section الجديد */
 .add-section {
   background-color: #eef6ff;
   border-right: 5px solid #2196F3;
@@ -131,3 +133,28 @@ body {
   border-radius: 10px; /* حواف مستديرة لتتناسب مع تصميم البطاقة */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* ظل خفيف */
 }
+
+
+/* تعديل تنسيق الزر ليستخدم خصائص .view-button */
+/* (ملاحظة: إذا كان .view-button معرفًا بالفعل في students-style.css،
+   فيمكنك إزالة هذا الجزء أو تعديله ليتناسب مع التداخل) */
+.form-button, .view-button { /* نجمع بين الاثنين لضمان تطبيق التنسيق */
+  background-color: var(--primary-color, #4CAF50); /* لون أزرق جذاب */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* إضافة انتقال للتحويم والضغط */
+  margin-top: 20px;
+  text-decoration: none; /* إذا كان يستخدم كزر في رابط */
+  display: inline-block; /* ليتناسب مع أزرار الروابط */
+}
+
+.form-button:hover, .view-button:hover {
+  background-color: var(--primary-dark-color, #0a8f0a); /* لون أغمق عند التحويم */
+  transform: translateY(-2px); /* تأثير رفع بسيط */
+}
+
