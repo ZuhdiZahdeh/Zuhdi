@@ -93,6 +93,29 @@ body {
   color: #333;
 }
 
+
+/* التنسيقات الجديدة لـ page-wrapper */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ليغطي الارتفاع الكامل للعرض */
+  width: 100%; /* ليغطي العرض الكامل */
+  box-sizing: border-box;
+  /* يمكنك هنا وضع الـ padding: 20px; الذي كان في الـ body إذا أردته لكل محتوى الصفحة */
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  margin-top: auto; /* هذا مهم جداً لدفعه للأسفل في حاوية flex */
+  width: 100%; /* لضمان أنه يأخذ العرض الكامل */
+  box-sizing: border-box; /* لتضمين الحشوة في العرض */
+}
+
+
 h1, h2, h3, h4 {
   color: #2c3e50;
   margin-bottom: 20px;
@@ -120,13 +143,7 @@ h2 i {
   color: #4CAF50;
 }
 
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 15px;
-  text-align: center;
-  margin-top: 40px;
-}
+
 
 .container {
   background-color: #ffffff;
