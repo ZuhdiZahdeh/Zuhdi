@@ -12,14 +12,18 @@
 <body class="add-project-page">
 
   <div include-html="includes/header.html"></div>
- <div class="page-wrapper">  
-  <section class="add-section"> <main class="form-container">
+  
+  <section class="add-section">
+    <main class="form-container">
       <h2>إضافة مشروع جديد</h2>
 
       <div class="form-group">
-        <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
-        <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
-      </div>
+        <label for="select-student">اختر الطالب:</label>
+        <select id="select-student">
+          <option value="">جارٍ تحميل الطلاب...</option>
+        </select>
+        <input type="hidden" id="ID-students" name="ID-students"> 
+        </div>
 
       <div class="form-group">
         <label for="title">عنوان المشروع:</label>
@@ -36,7 +40,9 @@
         <input type="date" id="submission_date">
       </div>
 
-      <button id="ID-projects" class="view-button">إضافة المشروع</button> <div id="status-message" class="message"></div>
+      <button id="ID-projects" class="view-button">إضافة المشروع</button>
+
+      <div id="status-message" class="message"></div>
     </main>
   </section>
 
@@ -45,8 +51,9 @@
   <script type="module" src="firebase-init.js"></script>
   <script type="module">
     import { db } from './firebase-init.js';
-    import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+    import { collection, addDoc, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
+    // دالة لعرض الرسائل
     function showMessage(msg, type) {
       const statusMessage = document.getElementById('status-message');
       statusMessage.textContent = msg;
@@ -57,14 +64,62 @@
       }, 5000);
     }
 
+    // دالة لجلب الطلاب وملء القائمة المنسدلة
+    async function loadStudents() {
+      const selectStudent = document.getElementById('select-student');
+      selectStudent.innerHTML = '<option value="">جارٍ تحميل الطلاب...</option>'; // رسالة تحميل مبدئية
+
+      try {
+        const studentsRef = collection(db, 'students');
+        // يمكن ترتيب الطلاب حسب الاسم أو رقم الطالب
+        const q = query(studentsRef, orderBy('name', 'asc'));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          selectStudent.innerHTML = '<option value="">لا توجد طلاب متاحين</option>';
+          return;
+        }
+
+        // مسح الخيارات الحالية وإضافة الخيار الافتراضي
+        selectStudent.innerHTML = '<option value="">اختر الطالب</option>';
+
+        querySnapshot.forEach((doc) => {
+          const studentData = doc.data();
+          const option = document.createElement('option');
+          option.value = studentData.student_number; // قيمة الخيار هي رقم الطالب
+          option.textContent = studentData.name + ' (' + studentData.student_number + ')'; // النص الظاهر: اسم الطالب ورقمه
+          selectStudent.appendChild(option);
+        });
+
+      } catch (error) {
+        console.error("خطأ في جلب الطلاب:", error);
+        selectStudent.innerHTML = '<option value="">خطأ في التحميل</option>';
+        showMessage("❌ تعذر تحميل قائمة الطلاب. الرجاء المحاولة لاحقًا.", "error");
+      }
+    }
+
+    // استدعاء دالة جلب الطلاب عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStudents();
+      // تشغيل include-html بعد تحميل الطلاب
+      includeHTML();
+    });
+
+    // معالجة حدث تغيير اختيار الطالب
+    document.getElementById('select-student').addEventListener('change', function() {
+      document.getElementById('ID-students').value = this.value; // تعبئة الحقل المخفي برقم الطالب
+    });
+
+
+    // منطق إضافة المشروع
     document.getElementById('ID-projects').onclick = async function() {
-      const student_id = document.getElementById('ID-students').value.trim();
+      const student_id = document.getElementById('ID-students').value.trim(); // سيتم جلبها من الحقل المخفي
       const title = document.getElementById('title').value.trim();
       const description = document.getElementById('description').value.trim();
       const submission_date_str = document.getElementById('submission_date').value;
 
       if (!student_id || !title || !description || !submission_date_str) {
-        showMessage("الرجاء تعبئة جميع حقول المشروع المطلوبة.", "error");
+        showMessage("الرجاء تعبئة جميع حقول المشروع المطلوبة واختيار الطالب.", "error");
         return;
       }
 
@@ -77,7 +132,9 @@
         });
         showMessage("✅ تمت إضافة المشروع بنجاح! المعرف التلقائي: " + docRef.id, "success");
 
-        document.getElementById('ID-students').value = '';
+        // إعادة تعيين النموذج
+        document.getElementById('select-student').value = ''; // إعادة تعيين القائمة المنسدلة
+        document.getElementById('ID-students').value = ''; // مسح الحقل المخفي
         document.getElementById('title').value = '';
         document.getElementById('description').value = '';
         document.getElementById('submission_date').value = '';
