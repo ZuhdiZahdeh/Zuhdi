@@ -12,88 +12,222 @@
 <body class="add-participation-page">
 
   <div include-html="includes/header.html"></div>
-   <div class="page-wrapper"> 
-  <section class="add-section"> <main class="form-container">
-      <h2>إضافة مشاركة جديدة</h2>
+  <div class="page-wrapper"> 
+    <section class="add-section"> 
+      <main class="form-container">
+        <h2>إضافة مشاركة جديدة</h2>
 
-      <div class="form-group">
-        <label for="ID-students">رقم الطالب (المعرف اليدوي):</label>
-        <input type="text" id="ID-students" placeholder="ادخل رقم الطالب">
-      </div>
+        <div class="form-group">
+          <label for="select-student">اختر الطالب:</label>
+          <select id="select-student">
+            <option value="">جارٍ تحميل الطلاب...</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="ID-projects">معرف المشروع (الرقم اليدوي/العنوان):</label>
-        <input type="text" id="ID-projects" placeholder="ادخل معرف المشروع">
-      </div>
+        <div class="form-group">
+          <label for="student-id-display">رقم الطالب (سيُملأ تلقائياً):</label>
+          <input type="text" id="student-id-display" readonly placeholder="رقم الطالب المحدد">
+          <input type="hidden" id="student-id-value"> </div>
 
-      <div class="form-group">
-        <label for="type">نوع المشاركة:</label>
-        <input type="text" id="type" placeholder="ادخل نوع المشاركة (مثال: فيديو، صورة)">
-      </div>
+        <div class="form-group">
+          <label for="select-project">اختر المشروع:</label>
+          <select id="select-project">
+            <option value="">جارٍ تحميل المشاريع...</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="category">الفئة:</label>
-        <input type="text" id="category" placeholder="ادخل فئة المشاركة (مثال: تقني، فني)">
-      </div>
+        <div class="form-group">
+          <label for="project-id-display">معرف المشروع (سيُملأ تلقائياً):</label>
+          <input type="text" id="project-id-display" readonly placeholder="معرف المشروع المحدد">
+          <input type="hidden" id="project-id-value"> </div>
 
-      <div class="form-group">
-        <label for="video_link">رابط الفيديو:</label>
-        <input type="url" id="video_link" placeholder="ادخل رابط الفيديو (إذا كان نوع المشاركة فيديو)">
-      </div>
+        <div class="form-group">
+          <label for="type">نوع المشاركة:</label>
+          <input type="text" id="type" placeholder="ادخل نوع المشاركة (مثال: فيديو، صورة)">
+        </div>
 
-      <button id="ID-participation" class="view-button">إضافة المشاركة</button> <div id="status-message" class="message"></div>
-    </main>
-  </section>
+        <div class="form-group">
+          <label for="category">الفئة:</label>
+          <input type="text" id="category" placeholder="ادخل فئة المشاركة (مثال: تقني، فني)">
+        </div>
 
-  <div include-html="includes/footer.html"></div>
-  <script src="main-script.js"></script>
-  <script type="module" src="firebase-init.js"></script>
-  <script type="module">
-    import { db } from './firebase-init.js';
-    import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+        <div class="form-group">
+          <label for="video_link">رابط الفيديو:</label>
+          <input type="url" id="video_link" placeholder="ادخل رابط الفيديو (إذا كان نوع المشاركة فيديو)">
+        </div>
 
-    function showMessage(msg, type) {
-      const statusMessage = document.getElementById('status-message');
-      statusMessage.textContent = msg;
-      statusMessage.className = `message ${type}`;
-      statusMessage.style.display = 'block';
-      setTimeout(() => {
-        statusMessage.style.display = 'none';
-      }, 5000);
-    }
+        <button id="add-participation-button" class="view-button">إضافة المشاركة</button> 
+        <div id="status-message" class="message"></div>
+      </main>
+    </section>
 
-    document.getElementById('ID-participation').onclick = async function() {
-      const student_id = document.getElementById('ID-students').value.trim();
-      const project_id = document.getElementById('ID-projects').value.trim();
-      const type = document.getElementById('type').value.trim();
-      const category = document.getElementById('category').value.trim();
-      const video_link = document.getElementById('video_link').value.trim();
+    <div include-html="includes/footer.html"></div>
+    <script src="main-script.js"></script>
+    <script type="module" src="firebase-init.js"></script>
+    <script type="module">
+      import { db } from './firebase-init.js';
+      import { collection, addDoc, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
-      if (!student_id || !project_id || !type || !category || !video_link) {
-        showMessage("الرجاء تعبئة جميع حقول المشاركة المطلوبة.", "error");
-        return;
+      function showMessage(msg, type) {
+        const statusMessage = document.getElementById('status-message');
+        statusMessage.textContent = msg;
+        statusMessage.className = `message ${type}`;
+        statusMessage.style.display = 'block';
+        setTimeout(() => {
+          statusMessage.style.display = 'none';
+        }, 5000);
       }
 
-      try {
-        const docRef = await addDoc(collection(db, "participation"), {
-          student_id: student_id,
-          project_id: project_id,
-          type: type,
-          category: category,
-          video_link: video_link
-        });
-        showMessage("✅ تمت إضافة المشاركة بنجاح! المعرف التلقائي: " + docRef.id, "success");
+      const selectStudent = document.getElementById('select-student');
+      const studentIdDisplay = document.getElementById('student-id-display');
+      const studentIdValue = document.getElementById('student-id-value');
 
-        document.getElementById('ID-students').value = '';
-        document.getElementById('ID-projects').value = '';
-        document.getElementById('type').value = '';
-        document.getElementById('category').value = '';
-        document.getElementById('video_link').value = '';
-      } catch (error) {
-        showMessage("❌ خطأ في إضافة المشاركة: " + error.message, "error");
+      const selectProject = document.getElementById('select-project');
+      const projectIdDisplay = document.getElementById('project-id-display');
+      const projectIdValue = document.getElementById('project-id-value');
+
+      // لربط student_number باسم الطالب
+      let studentsMap = new Map();
+      // لربط project_id باسم المشروع
+      let projectsMap = new Map();
+
+      // دالة لجلب الطلاب وملء قائمة الطلاب المنسدلة
+      async function loadStudents() {
+        selectStudent.innerHTML = '<option value="">جارٍ تحميل الطلاب...</option>';
+        studentsMap.clear();
+
+        try {
+          const studentsRef = collection(db, 'students');
+          const q = query(studentsRef, orderBy('name', 'asc'));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            selectStudent.innerHTML = '<option value="">لا توجد طلاب متاحون</option>';
+            return;
+          }
+
+          selectStudent.innerHTML = '<option value="">اختر الطالب</option>';
+
+          querySnapshot.forEach((doc) => {
+            const studentData = doc.data();
+            const option = document.createElement('option');
+            option.value = studentData.student_number;
+            option.textContent = studentData.name;
+            selectStudent.appendChild(option);
+            studentsMap.set(studentData.student_number, studentData.name);
+          });
+
+        } catch (error) {
+          console.error("خطأ في جلب الطلاب:", error);
+          selectStudent.innerHTML = '<option value="">خطأ في التحميل</option>';
+          showMessage("❌ تعذر تحميل قائمة الطلاب. الرجاء المحاولة لاحقًا.", "error");
+        }
       }
-    };
-  </script>
-   </div>
+
+      // دالة لجلب المشاريع وملء قائمة المشاريع المنسدلة
+      async function loadProjects() {
+          selectProject.innerHTML = '<option value="">جارٍ تحميل المشاريع...</option>';
+          projectsMap.clear();
+
+          try {
+              const projectsRef = collection(db, 'projects');
+              const q = query(projectsRef, orderBy('title', 'asc'));
+              const querySnapshot = await getDocs(q);
+
+              if (querySnapshot.empty) {
+                  selectProject.innerHTML = '<option value="">لا توجد مشاريع متاحة</option>';
+                  return;
+              }
+
+              selectProject.innerHTML = '<option value="">اختر المشروع</option>';
+
+              querySnapshot.forEach((doc) => {
+                  const projectData = doc.data();
+                  const option = document.createElement('option');
+                  option.value = doc.id; // قيمة الخيار هي معرف المستند التلقائي للمشروع
+                  option.textContent = projectData.title; // النص الظاهر هو عنوان المشروع
+                  selectProject.appendChild(option);
+                  projectsMap.set(doc.id, projectData);
+              });
+
+          } catch (error) {
+              console.error("خطأ في جلب المشاريع:", error);
+              selectProject.innerHTML = '<option value="">خطأ في التحميل</option>';
+              showMessage("❌ تعذر تحميل قائمة المشاريع. الرجاء المحاولة لاحقًا.", "error");
+          }
+      }
+
+      // حدث عند اختيار طالب من القائمة المنسدلة
+      selectStudent.addEventListener('change', () => {
+        const selectedStudentNumber = selectStudent.value;
+        if (selectedStudentNumber) {
+          studentIdDisplay.value = selectedStudentNumber;
+          studentIdValue.value = selectedStudentNumber;
+        } else {
+          studentIdDisplay.value = '';
+          studentIdValue.value = '';
+        }
+      });
+
+      // حدث عند اختيار مشروع من القائمة المنسدلة
+      selectProject.addEventListener('change', () => {
+          const selectedProjectId = selectProject.value;
+          if (selectedProjectId) {
+              const projectData = projectsMap.get(selectedProjectId);
+              if (projectData) {
+                  projectIdDisplay.value = selectedProjectId;
+                  projectIdValue.value = selectedProjectId;
+              }
+          } else {
+              projectIdDisplay.value = '';
+              projectIdValue.value = '';
+          }
+      });
+
+      // استدعاء دالة جلب الطلاب والمشاريع عند تحميل الصفحة
+      document.addEventListener('DOMContentLoaded', () => {
+          loadStudents();
+          loadProjects();
+      });
+
+      // منطق إضافة المشاركة عند النقر على الزر
+      document.getElementById('add-participation-button').onclick = async function() {
+        const student_id = studentIdValue.value.trim(); // جلب رقم الطالب من الحقل المخفي
+        const project_id = projectIdValue.value.trim(); // جلب معرف المشروع من الحقل المخفي
+        const type = document.getElementById('type').value.trim();
+        const category = document.getElementById('category').value.trim();
+        const video_link = document.getElementById('video_link').value.trim();
+
+        if (!student_id || !project_id || !type || !category || !video_link) {
+          showMessage("الرجاء اختيار الطالب والمشروع، وتعبئة جميع حقول المشاركة.", "error");
+          return;
+        }
+
+        try {
+          const docRef = await addDoc(collection(db, "participation"), {
+            student_id: student_id, // رقم الطالب المختار
+            project_id: project_id, // معرف المشروع المختار (معرف Firestore التلقائي)
+            type: type,
+            category: category,
+            video_link: video_link
+          });
+          showMessage("✅ تمت إضافة المشاركة بنجاح! المعرف التلقائي: " + docRef.id, "success");
+
+          // إعادة تعيين النموذج بعد الإضافة
+          selectStudent.value = '';
+          studentIdDisplay.value = '';
+          studentIdValue.value = '';
+          selectProject.value = '';
+          projectIdDisplay.value = '';
+          projectIdValue.value = '';
+          document.getElementById('type').value = '';
+          document.getElementById('category').value = '';
+          document.getElementById('video_link').value = '';
+        } catch (error) {
+          showMessage("❌ خطأ في إضافة المشاركة: " + error.message, "error");
+        }
+      };
+    </script>
+  </div>
 </body>
 </html>
